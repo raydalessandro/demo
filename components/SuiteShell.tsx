@@ -32,8 +32,8 @@ export default function SuiteShell({ tenant }: { tenant: Tenant }) {
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link
-                href="/"
-                aria-label="Torna ai negozi demo"
+                href="/demo"
+                aria-label="Torna alle demo"
                 className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                 style={{ background: "rgba(255,255,255,.12)" }}
               >

@@ -21,8 +21,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VISTA Suite · demo",
-  description: "Il compagno digitale dell'ottico indipendente — demo interne",
+  title: "VISTA Suite \u2014 Il compagno digitale dell\u2019ottico indipendente",
+  description:
+    "Richiami che riportano i clienti, vendita guidata al banco, l\u2019app col tuo nome. Sopra il gestionale che gi\u00e0 usi.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
