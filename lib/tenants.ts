@@ -22,7 +22,7 @@ export const TENANTS: Tenant[] = [
       textSoft: "#6B5D50",
       textFaint: "#B9AA97",
     },
-    moduliAttivi: ["recall", "banco", "boutique"],
+    moduliAttivi: ["recall", "banco", "boutique", "ordini"],
     clientiAttivi: 214,
     stato: "pilota",
   },

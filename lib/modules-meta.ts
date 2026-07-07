@@ -17,4 +17,8 @@ export const MODULE_META: Record<ModuleId, { label: string; descrizione: string 
     label: "Boutique",
     descrizione: "L'app del negozio, col suo nome: riordini, prenotazioni, promo.",
   },
+  ordini: {
+    label: "Ordini",
+    descrizione: "La pipeline del laboratorio: ordini LAC e buste occhiali, con gli stati.",
+  },
 };
