@@ -1,1 +1,117 @@
-# demo
+# VISTA Suite — demo front (v0.2)
+
+Il compagno digitale dell'ottico indipendente. Questo repo contiene le
+**demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
+finti, ma architettura già orientata al multitenant.
+
+## Stack
+
+- **Next.js 15** (App Router) + **React 19** + **TypeScript**
+- **Tailwind CSS 3.4** per le utility, colori di brand via token/inline
+- **lucide-react** per le icone
+- Deploy previsto su **Vercel** (zero config: `vercel` o import da GitHub)
+
+## Avvio
+
+```bash
+npm install
+npm run dev
+# → http://localhost:3000
+```
+
+## Cosa c'è dentro
+
+- `/` — hub interno: elenco dei negozi demo con la loro palette e i
+  moduli attivi.
+- `/demo/aurora` — Ottica Aurora, suite completa (Recall + Banco +
+  Boutique). È la demo "da manuale" del kit venditore.
+- `/demo/bollani` — Ottica Bollani, solo Recall + Boutique: dimostra che
+  i moduli si attivano uno alla volta e che l'app cliente cambia pelle
+  (blu/verde invece di espresso/ottone) senza toccare una riga di
+  componente.
+
+In ogni demo il commutatore in alto passa da **Ottico** (pannello del
+negozio) a **Cliente** (l'app white-label vista dal cliente finale).
+
+## Architettura (le tre decisioni che contano)
+
+**1. Tenant come config.** `lib/types.ts` definisce `Tenant` con la
+stessa shape della futura tabella `aziende` su Supabase (branding,
+`moduliAttivi[]`, stato). Oggi i tenant vivono in `lib/tenants.ts`;
+domani arriveranno da DB con RLS. I componenti non lo sapranno mai.
+
+**2. Due sistemi di colore.** Il lato ottico usa i token `VISTA`
+(`lib/theme.tsx`): è il *nostro* prodotto, identico per tutti. Il lato
+cliente legge `tenant.brand`: è il *loro* negozio. Questa separazione è
+il white-label — e in trattativa si mostra cambiando negozio dall'hub.
+
+**3. Registry dei moduli.** `lib/registry.tsx` (pattern ripreso da
+Gestionale_ear): ogni modulo si dichiara con id, label, icona e
+componente; la shell monta solo quelli in `tenant.moduliAttivi`.
+Aggiungere un modulo = una cartella in `/modules` + una entry.
+
+I dati finti stanno tutti in `lib/demo-data.ts`: è il punto unico che
+diventerà lo strato di query Supabase, con i componenti invariati.
+
+## Struttura
+
+```
+app/
+  page.tsx              # hub demo
+  demo/[tenant]/        # rotta tenant (prefigura il multitenant)
+components/
+  SuiteShell.tsx        # header, commutatore ottico/cliente, tab moduli
+  ui.tsx                # Kpi, SectionTitle
+lib/
+  types.ts  tenants.ts  theme.tsx  registry.tsx  demo-data.ts
+modules/
+  recall/   banco/      boutique/
+```
+
+## Note sul porting dal prototipo di AD
+
+Il design e i contenuti sono quelli del prototipo (invariati di
+proposito). Interventi fatti:
+
+- fix crash nel Lens Configurator: icona `Sun` usata ma non importata;
+- font via `next/font` (Sora / Fraunces / JetBrains Mono) invece
+  dell'`@import` CSS — stesse classi `f-ui / f-serif / f-mono`;
+- messaggi WhatsApp firmati col nome del tenant (`{{negozio}}`);
+- capitale fermo calcolato dai dati invece che hardcoded.
+
+## v0.2 — Demo 2: Boutique coi funnel
+
+Nell'app cliente (entrambi i tenant, ognuno coi suoi colori):
+
+- **Ruota dei premi** (`GameWheel`): premi e pesi ripresi da App_ottica
+  (sole 20% frequente, vista 50% raro, caselle "riprova"); l'estrazione è
+  pesata e la ruota atterra sul segmento estratto. I codici si ritirano
+  solo in negozio: il gioco è un generatore di rientri.
+- **Porta un amico** (`ReferralCard`): QR reale e scansionabile
+  (qrcode.react) + link copiabile. "Tu + un amico = 20% sole per
+  entrambi", come nel prototipo originale.
+- **Raccolta recensioni** (`ReviewFunnel`): 4–5 stelle → invito Google;
+  1–3 stelle → messaggio privato al negozio (con link recensione sempre
+  disponibile, per correttezza).
+- **Guide arricchite** (`GuideList`): contenuti ripresi da
+  Gianfranco_vision_group, espandibili.
+
+Lato ottico, il pannello Boutique mostra ora **"Ritorno dai funnel"**:
+giri ruota → premi ritirati al banco, inviti → nuovi clienti,
+recensioni → media. È l'argomento di vendita reso visibile.
+
+Dipendenza aggiunta: `qrcode.react`.
+
+## Prossimi passi (ordine concordato)
+
+1. ✅ Demo 1 — suite consolidata su architettura tenant
+2. ✅ Demo 2 — Boutique arricchita coi funnel (v0.2)
+3. Demo 3 — Banco professionale con la logica di `Gestionale_ottica`
+   (prescrizione completa, busta lavoro)
+4. Demo 4 — scanner magazzino reale da `Conta_UPC` (BarcodeDetector)
+5. Supabase: tabella `aziende` ← shape di `Tenant`, RLS come in
+   `Next_gestionale_v1`
+
+---
+
+Spirale Editrice / VISTA · uso interno
