@@ -1,4 +1,4 @@
-# VISTA Suite — demo front (v0.3)
+# VISTA Suite — demo front (v0.4)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -130,6 +130,39 @@ Dentro c'è il dominio vero, da far validare ad AD:
 
 Rimandati di proposito (esistono già nel vecchio modulo, li portiamo
 quando serve): prisma, visione da vicino separata, PDF reale.
+
+## v0.4 — Banco: la vendita guidata
+
+Il Banco ora ha tre modalità (sotto-navigazione interna):
+
+- **Vendita guidata** — il funnel cliente-davanti: visita fatta,
+  montatura scelta, ci si siede al tavolino e il tablet conduce la
+  conversazione. Una decisione per schermata, con la demo visiva nel
+  punto in cui serve: spessori del bordo per indice (calcolati sulla
+  gradazione del cliente), scena notturna per l'antiriflesso, schermo
+  con/senza filtro blu, fotocromatico, geometrie progressive. I
+  "consigliato per te" nascono dalle risposte del primo step (come usi
+  gli occhi — il metodo EAR fatto software) e il totale è sempre in
+  vista. Prezzi à la carte: base per geometria + supplemento indice +
+  trattamenti.
+- **Preventivo rapido** — i tre pacchetti di prima, per l'ottico
+  esperto che va veloce. Qui restano anche conversione LAC e magazzino.
+- **Busta lavoro** — riceve la configurazione da entrambe le strade
+  (pacchetto o su misura) già precompilata.
+
+Due modi di vendere, un solo punto d'arrivo: per l'ottico navigato la
+guidata è un supporto, per il collaboratore junior è la traccia della
+vendita.
+
+Nota architettura: le scene dimostrative sono state estratte in
+`LensScenes.tsx` (il vecchio LensConfigurator è stato rimosso: ogni
+scena ora vive dentro lo step della sua decisione).
+
+## Magazzino — parcheggiato (decisione)
+
+Niente collegamento diretto col gestionale del negozio: i dati
+arriveranno via **export CSV** (quotidiano o settimanale) con un parser
+dedicato per tracciato. Da costruire quando si parte coi piloti.
 
 ## Prossimi passi (ordine concordato)
 
