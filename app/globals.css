@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ruoli tipografici — stessi nomi di classe usati nella demo di AD,
+   così i componenti si portano senza diff. I font arrivano da next/font. */
+.f-ui    { font-family: var(--font-ui), system-ui, sans-serif; }
+.f-serif { font-family: var(--font-serif), Georgia, serif; }
+.f-mono  { font-family: var(--font-mono), monospace; }
+
+html { -webkit-font-smoothing: antialiased; }
