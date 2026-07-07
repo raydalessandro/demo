@@ -147,3 +147,39 @@ export const FATTURE = [
 export function conNegozio(testo: string, nomeNegozio: string): string {
   return testo.replaceAll("{{negozio}}", nomeNegozio);
 }
+
+
+/* ── Dominio busta lavoro — ripreso da Gestionale_ottica ─────────── */
+
+export const TEMPLATE_RX = [
+  { nome: "Emmetrope", sfero: 0, cilindro: 0, asse: 0 },
+  { nome: "Miopia lieve", sfero: -2.0, cilindro: 0, asse: 0 },
+  { nome: "Miopia moderata", sfero: -4.0, cilindro: -0.5, asse: 180 },
+  { nome: "Ipermetropia", sfero: 2.0, cilindro: 0, asse: 0 },
+  { nome: "Astigmatismo", sfero: -1.0, cilindro: -1.5, asse: 90 },
+];
+
+export const TIPI_LENTE = [
+  { id: "monofocale", label: "Monofocale" },
+  { id: "progressiva", label: "Progressiva" },
+  { id: "bifocale", label: "Bifocale" },
+  { id: "office", label: "Office" },
+] as const;
+
+export const MATERIALI = ["CR39 (resina)", "Policarbonato", "Trivex", "Minerale"];
+
+export const INDICI = ["1.50", "1.56", "1.60", "1.67", "1.74"];
+
+/** Trattamenti extra oltre il pacchetto scelto al preventivatore. */
+export const TRATTAMENTI_EXTRA = [
+  { id: "indurente", label: "Indurente", prezzo: 20 },
+  { id: "idrorepellente", label: "Idrorepellente", prezzo: 25 },
+  { id: "antistatico", label: "Antistatico", prezzo: 15 },
+  { id: "anti_uv", label: "Anti-UV", prezzo: 10 },
+];
+
+export const GARANZIE = [
+  { id: "soddisfatti", label: "Soddisfatti o rimborsati (30gg)", prezzo: 30 },
+  { id: "rottura", label: "Rottura accidentale (1 anno)", prezzo: 25 },
+  { id: "smarrimento", label: "Furto e smarrimento", prezzo: 40 },
+];

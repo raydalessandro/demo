@@ -1,4 +1,4 @@
-# VISTA Suite — demo front (v0.2)
+# VISTA Suite — demo front (v0.3)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -102,11 +102,40 @@ recensioni → media. È l'argomento di vendita reso visibile.
 
 Dipendenza aggiunta: `qrcode.react`.
 
+## v0.3 — Demo 3: Banco professionale
+
+Il modulo Banco ora ha due anime, con sotto-navigazione interna:
+
+- **Preventivo** (com'era, più le colonne buono/migliore/premium ora
+  selezionabili) e
+- **Busta lavoro**: workflow guidato in 7 step ripreso da
+  Gestionale_ottica — Cliente → Prescrizione → Montatura → Lenti →
+  Garanzie → Centratura → Riepilogo. Montatura, geometria e pacchetto
+  arrivano precompilati dalla colonna scelta al preventivatore; il
+  totale si aggiorna in tempo reale.
+
+Dentro c'è il dominio vero, da far validare ad AD:
+
+- Rx per occhio con step da 0,25 D (sfero −20/+20, cilindro ±6), asse a
+  passi di 5° con **schema TABO** disegnato (stessa formula del vecchio
+  gestionale), ADD condivisa 0–3,50 per progressive/bifocali/office,
+  template rapidi (Emmetrope, Miopia lieve/moderata, Ipermetropia,
+  Astigmatismo);
+- lenti: tipo, materiale (CR39/Policarbonato/Trivex/Minerale), indice
+  1.50→1.74, trattamenti extra coi prezzi del vecchio modulo, garanzie
+  (soddisfatti/rottura/smarrimento);
+- centratura: PD OD/OS con totale, altezze di montaggio, angolo
+  pantoscopico, distanza vertice, note tecniche;
+- riepilogo in stile busta stampabile con numero e data.
+
+Rimandati di proposito (esistono già nel vecchio modulo, li portiamo
+quando serve): prisma, visione da vicino separata, PDF reale.
+
 ## Prossimi passi (ordine concordato)
 
 1. ✅ Demo 1 — suite consolidata su architettura tenant
 2. ✅ Demo 2 — Boutique arricchita coi funnel (v0.2)
-3. Demo 3 — Banco professionale con la logica di `Gestionale_ottica`
+3. ✅ Demo 3 — Banco professionale con la logica di `Gestionale_ottica`
    (prescrizione completa, busta lavoro)
 4. Demo 4 — scanner magazzino reale da `Conta_UPC` (BarcodeDetector)
 5. Supabase: tabella `aziende` ← shape di `Tenant`, RLS come in
