@@ -226,3 +226,40 @@ export const AR_OPZIONI = [
 
 export const PREZZO_BLU = 30;
 export const PREZZO_FOTO = 80;
+
+/* ── Modulo Ordini (gestionale, prima cellula) ───────────────────── */
+
+export const LAC_CATALOGO = [
+  "Acuvue Oasys mensili ×6",
+  "Dailies Total1 90pz",
+  "Biofinity mensili ×6",
+  "Air Optix plus HydraGlyde ×6",
+];
+
+/** Pipeline ordine LAC — stati ripresi da OrdiniLACModule (in_attesa_ordine → …). */
+export const STATI_LAC = [
+  { id: "da_ordinare", label: "Da ordinare", bg: "#F7EEDD", fg: "#C98A2B" },
+  { id: "ordinato", label: "Ordinato", bg: "#E7EAF6", fg: "#5B6DA8" },
+  { id: "arrivato", label: "Arrivato · avvisa", bg: "#E2F0EE", fg: "#127E7A" },
+  { id: "consegnato", label: "Consegnato", bg: "#F2F5F4", fg: "#274744" },
+] as const;
+
+export const ORDINI_LAC_DEMO = [
+  { id: 1, cliente: "Laura Bianchi", prodotto: "Acuvue Oasys mensili ×6", poteri: "OD −5.25 · OS −4.75", fonte: "app", stato: "da_ordinare", quando: "2 min fa · riordino dall’app" },
+  { id: 2, cliente: "Ahmed Hassan", prodotto: "Dailies Total1 90pz", poteri: "OD −3.00 · OS −3.25", fonte: "app", stato: "ordinato", quando: "ieri" },
+  { id: 3, cliente: "Giulia Verdi", prodotto: "Biofinity toriche ×6", poteri: "OD −2.25 cil −0.75×180", fonte: "banco", stato: "arrivato", quando: "2 gg fa" },
+  { id: 4, cliente: "Marco Esposito", prodotto: "Air Optix plus HydraGlyde ×6", poteri: "OD −1.50 · OS −1.75", fonte: "banco", stato: "ordinato", quando: "3 gg fa" },
+  { id: 5, cliente: "Franca Villa", prodotto: "Dailies AquaComfort 30pz", poteri: "OD +2.00 · OS +2.25", fonte: "banco", stato: "consegnato", quando: "1 sett fa" },
+];
+
+export const STATI_BUSTA = [
+  { id: "lavorazione", label: "In lavorazione", bg: "#E7EAF6", fg: "#5B6DA8" },
+  { id: "pronta", label: "Pronta · avvisa", bg: "#E2F0EE", fg: "#127E7A" },
+  { id: "consegnata", label: "Consegnata", bg: "#F2F5F4", fg: "#274744" },
+] as const;
+
+export const BUSTE_DEMO = [
+  { id: "BL-2026-0141", cliente: "Giuseppe Ferrari", descrizione: "Progressiva Comfort · 1.60 · AR premium", stato: "lavorazione" },
+  { id: "BL-2026-0139", cliente: "Martina Colombo", descrizione: "Monofocale · 1.50 · AR classico", stato: "pronta" },
+  { id: "BL-2026-0134", cliente: "Elena Ricci", descrizione: "Sole graduato · 1.60", stato: "consegnata" },
+];

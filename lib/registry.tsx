@@ -1,12 +1,13 @@
 "use client";
 
 import type { ComponentType } from "react";
-import { Bell, Glasses, Store, type LucideIcon } from "lucide-react";
+import { Bell, Glasses, Package, Store, type LucideIcon } from "lucide-react";
 import type { ModuleId } from "./types";
 import { MODULE_META } from "./modules-meta";
 import RecallModule from "@/modules/recall/RecallModule";
 import BancoModule from "@/modules/banco/BancoModule";
 import BoutiqueConfigModule from "@/modules/boutique/BoutiqueConfigModule";
+import OrdiniModule from "@/modules/ordini/OrdiniModule";
 
 /**
  * Registry dei moduli — pattern preso da Gestionale_ear (MODULES_REGISTRY):
@@ -40,5 +41,11 @@ export const MODULES: Record<ModuleId, ModuleDef> = {
     ...MODULE_META.boutique,
     icon: Store,
     Component: BoutiqueConfigModule,
+  },
+  ordini: {
+    id: "ordini",
+    ...MODULE_META.ordini,
+    icon: Package,
+    Component: OrdiniModule,
   },
 };

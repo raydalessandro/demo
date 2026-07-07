@@ -1,4 +1,4 @@
-# VISTA Suite — demo front + sito (v0.5)
+# VISTA Suite — demo front + sito (v0.6)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -194,6 +194,34 @@ dedicato per tracciato. Da costruire quando si parte coi piloti.
   prodotto si tocca senza parlare con nessuno.
 - Placeholder da sostituire prima del deploy pubblico: email
   `info@vistasuite.example`, dominio, P.IVA in footer.
+
+## v0.6 — Ordini: la prima cellula del gestionale
+
+Nuovo modulo **Ordini** (attivo su Aurora, assente su Bollani: la
+modularita si vede anche qui): la pipeline del laboratorio.
+
+- **Ordini LAC**: coda con stati toccabili (Da ordinare -> Ordinato ->
+  Arrivato/avvisa -> Consegnato, ripresi da OrdiniLACModule del vecchio
+  gestionale), badge "dall'app" per i riordini che arrivano dalla
+  Boutique — il riordino di Laura fatto "con un tap" atterra qui in cima
+  alla coda: il cerchio si chiude davanti ad AD. Form nuovo ordine con
+  catalogo (Acuvue, Dailies, Biofinity, Air Optix).
+- **Buste occhiali**: le buste nate dal Banco vivono qui fino alla
+  consegna (In lavorazione -> Pronta/avvisa -> Consegnata).
+
+### Stato del gestionale ereditato (valutazione onesta)
+
+- `Gestionale_ottica` (zip): ORO come dominio (flussi, campi, stati —
+  gia saccheggiato per busta, Rx e ora ordini), ma il codice as-is non
+  e integrabile: file monolitici, stili inline, localStorage, zero
+  multi-tenant. Si porta la logica, non i file.
+- `Next_gestionale_v1` (zip): il telaio giusto (Supabase, tabella
+  aziende, RLS, auth) col dominio sbagliato (studi musicali). Si riusa
+  schema/auth quando colleghiamo il database.
+- Strategia confermata: **debutto su LAC** (ordini ricorrenti, niente
+  modulo fiscale necessario al giorno uno), poi gestionale completo
+  sulla stessa base dati. Il fossato fiscale (TS/FE/RT) e cataloghi
+  lenti restano la guerra dei 24-36 mesi: il LAC-first la aggira.
 
 ## Prossimi passi (ordine concordato)
 
