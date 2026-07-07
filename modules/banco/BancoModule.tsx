@@ -10,21 +10,30 @@ import {
   Glasses,
   ScanBarcode,
   Send,
-  SlidersHorizontal,
   Sparkles,
+  Wand2,
 } from "lucide-react";
 import { SectionTitle } from "@/components/ui";
 import { VISTA as T } from "@/lib/theme";
 import { FERMI, GEOMETRIE, MONTATURE } from "@/lib/demo-data";
-import LensConfigurator from "./LensConfigurator";
 import ConversioneLAC from "./ConversioneLAC";
 import BustaLavoro from "./BustaLavoro";
+import VenditaGuidata, { type ConfigSuMisura } from "./VenditaGuidata";
+
+/**
+ * Banco — le tre modalità di lavoro:
+ * · Vendita guidata: il funnel cliente-davanti, una decisione per volta.
+ * · Preventivo rapido: i pacchetti, per l'ottico esperto che va veloce.
+ * · Busta lavoro: l'ordine tecnico. Riceve la configurazione da
+ *   entrambe le strade (pacchetto o su misura).
+ */
 
 export default function BancoModule() {
-  const [sub, setSub] = useState<"preventivo" | "busta">("preventivo");
+  const [sub, setSub] = useState<"guidata" | "rapido" | "busta">("guidata");
   const [montatura, setMontatura] = useState(MONTATURE[2]);
   const [geo, setGeo] = useState(GEOMETRIE[2]);
   const [tierIdx, setTierIdx] = useState(1);
+  const [configBusta, setConfigBusta] = useState<ConfigSuMisura | null>(null);
 
   const tiers = useMemo(
     () => [
@@ -57,8 +66,36 @@ export default function BancoModule() {
     [geo],
   );
 
-  const tier = tiers[tierIdx];
   const capitaleFermo = FERMI.reduce((s, f) => s + f.costo, 0);
+
+  /** Dal preventivo rapido: il pacchetto scelto diventa la config della busta. */
+  const bustaDaPacchetto = () => {
+    const t = tiers[tierIdx];
+    setConfigBusta({
+      label: t.nome,
+      lente: t.lente,
+      voci: t.voci,
+      fotoIncluso: tierIdx === 2,
+      geoId: geo.id,
+    });
+    setSub("busta");
+  };
+
+  /** Dalla vendita guidata: arriva la config su misura. */
+  const bustaDaFunnel = (c: ConfigSuMisura) => {
+    setConfigBusta(c);
+    setSub("busta");
+  };
+
+  const config =
+    configBusta ?? {
+      label: tiers[tierIdx].nome,
+      lente: tiers[tierIdx].lente,
+      voci: tiers[tierIdx].voci,
+      fotoIncluso: tierIdx === 2,
+      geoId: geo.id,
+    };
+  const geoBusta = GEOMETRIE.find((g) => g.id === config.geoId) ?? geo;
 
   return (
     <div>
@@ -66,14 +103,15 @@ export default function BancoModule() {
       <div className="flex gap-1.5">
         {(
           [
-            ["preventivo", Glasses, "Preventivo"],
+            ["guidata", Wand2, "Vendita guidata"],
+            ["rapido", Glasses, "Preventivo rapido"],
             ["busta", ClipboardList, "Busta lavoro"],
           ] as const
         ).map(([id, Icon, l]) => (
           <button
             key={id}
             onClick={() => setSub(id)}
-            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs f-ui font-semibold"
+            className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[11px] f-ui font-semibold"
             style={
               sub === id
                 ? { background: T.ink, color: "#fff" }
@@ -85,25 +123,36 @@ export default function BancoModule() {
         ))}
       </div>
 
-      {sub === "busta" ? (
+      {sub === "guidata" && (
+        <div className="mt-3">
+          <VenditaGuidata montatura={montatura} setMontatura={setMontatura} onBusta={bustaDaFunnel} />
+          <div className="text-[11px] mt-2" style={{ color: T.inkSoft }}>
+            Da girare verso il cliente: una decisione per schermata, la demo al momento giusto, il totale sempre in vista.
+          </div>
+        </div>
+      )}
+
+      {sub === "busta" && (
         <>
           <SectionTitle icon={ClipboardList}>
-            Busta lavoro · {tier.nome} su {montatura.nome}
+            Busta lavoro · {config.label} su {montatura.nome}
           </SectionTitle>
           <BustaLavoro
-            key={`${montatura.id}-${geo.id}-${tierIdx}`}
+            key={`${montatura.id}-${config.geoId}-${config.label}-${config.lente}`}
             montatura={montatura}
-            geo={geo}
-            tier={{ nome: tier.nome, lente: tier.lente, voci: tier.voci }}
-            fotoIncluso={tierIdx === 2}
+            geo={geoBusta}
+            tier={{ nome: config.label, lente: config.lente, voci: config.voci }}
+            fotoIncluso={config.fotoIncluso}
           />
           <div className="text-[11px] mt-2" style={{ color: T.inkSoft }}>
-            Montatura, geometria e pacchetto arrivano precompilati dal preventivatore: cambiali di là e la busta si aggiorna.
+            La configurazione arriva precompilata dalla vendita guidata o dal pacchetto scelto al preventivo rapido.
           </div>
         </>
-      ) : (
+      )}
+
+      {sub === "rapido" && (
         <>
-          <SectionTitle icon={Glasses}>Preventivatore al banco</SectionTitle>
+          <SectionTitle icon={Glasses}>Preventivatore a pacchetti</SectionTitle>
 
           <div className="rounded-xl p-3 space-y-3" style={{ background: T.card, border: `1px solid ${T.line}` }}>
             <div>
@@ -190,11 +239,11 @@ export default function BancoModule() {
               <Send size={15} /> Invia preventivo
             </button>
             <button
-              onClick={() => setSub("busta")}
+              onClick={bustaDaPacchetto}
               className="flex-1 rounded-lg py-2.5 f-ui font-semibold text-sm flex items-center justify-center gap-2"
               style={{ background: T.ink, color: "#fff" }}
             >
-              <ClipboardList size={15} /> Busta lavoro ({tier.nome}) →
+              <ClipboardList size={15} /> Busta lavoro ({tiers[tierIdx].nome}) →
             </button>
           </div>
 
@@ -203,12 +252,9 @@ export default function BancoModule() {
             <div className="text-xs leading-relaxed" style={{ color: T.ink }}>
               <span className="f-ui font-semibold">Suggerimento di vendita · </span>
               Su una progressiva, mostra prima la colonna Premium: ancora il valore, poi lascia scegliere.
-              Il fotocromatico si racconta con un beneficio concreto: &quot;non cambia più occhiale quando esce&quot;.
+              Se il cliente vuole capire, passa alla vendita guidata: le demo sono lì.
             </div>
           </div>
-
-          <SectionTitle icon={SlidersHorizontal}>Lens configurator · da mostrare al cliente</SectionTitle>
-          <LensConfigurator />
 
           <SectionTitle icon={ArrowLeftRight}>Conversione prescrizione occhiale → LAC</SectionTitle>
           <ConversioneLAC />

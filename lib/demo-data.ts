@@ -183,3 +183,46 @@ export const GARANZIE = [
   { id: "rottura", label: "Rottura accidentale (1 anno)", prezzo: 25 },
   { id: "smarrimento", label: "Furto e smarrimento", prezzo: 40 },
 ];
+
+
+/* ── Dominio vendita guidata (funnel al banco) ───────────────────── */
+
+/** Stili di vita: guidano i "consigliato per te" del percorso. */
+export const STILI_VITA = [
+  { id: "guida", label: "Guido spesso, anche di sera", emoji: "🚗" },
+  { id: "schermi", label: "Più di 4 ore al giorno a schermo", emoji: "💻" },
+  { id: "aperto", label: "Molto tempo all'aperto", emoji: "☀️" },
+  { id: "sport", label: "Faccio sport", emoji: "🏃" },
+];
+
+/** Prezzo base lente nuda per geometria (senza indice né trattamenti). */
+export const LENTE_BASE: Record<string, number> = {
+  monofocale: 60,
+  office: 140,
+};
+
+/** Qualità della progressiva: il prezzo base della lente progressiva. */
+export const PROG_QUALITA = [
+  { id: 0, nome: "Base", prezzo: 220 },
+  { id: 1, nome: "Comfort", prezzo: 320 },
+  { id: 2, nome: "Top", prezzo: 460 },
+];
+
+/** Indici: supplemento e fattore di spessore per la visualizzazione. */
+export const INDICI_INFO = [
+  { indice: "1.50", supplemento: 0, fattore: 1.0, nota: "standard" },
+  { indice: "1.56", supplemento: 30, fattore: 0.87, nota: "sottile" },
+  { indice: "1.60", supplemento: 60, fattore: 0.78, nota: "extra sottile" },
+  { indice: "1.67", supplemento: 110, fattore: 0.68, nota: "ultra sottile" },
+  { indice: "1.74", supplemento: 180, fattore: 0.58, nota: "super sottile" },
+];
+
+/** Antiriflesso: le tre opzioni raccontabili al cliente. */
+export const AR_OPZIONI = [
+  { id: "nessuno", label: "Nessuno", prezzo: 0, nota: "riflessi visibili su schermi e fari" },
+  { id: "classico", label: "Classico", prezzo: 40, nota: "elimina i riflessi principali" },
+  { id: "premium", label: "Premium", prezzo: 70, nota: "più resistente e facile da pulire" },
+];
+
+export const PREZZO_BLU = 30;
+export const PREZZO_FOTO = 80;
