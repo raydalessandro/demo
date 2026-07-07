@@ -4,6 +4,23 @@ Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
 finti, ma architettura già orientata al multitenant.
 
+## Nota per l'agente AI (workflow zip → branch → PR)
+
+Quando ti passo una `.zip` che contiene un repo git con un commit da portare qui:
+
+1. **Non usare mai `cd`.** Ogni comando git deve usare `git -C <path>` così è
+   sempre esplicito su quale repo agisce (questo repo vs. il repo dentro la zip).
+2. Tratta il repo dentro la zip come **sola lettura**: estrai il commit/patch da
+   lì, non fare mai `checkout`/`am`/`reset`/`commit` al suo interno.
+3. Preferisci: aggiungi la zip come remote temporaneo di **questo** repo
+   (`git remote add zipsrc <zip>/.git && git fetch zipsrc && git cherry-pick <sha>`)
+   invece di lavorare dentro la cartella estratta.
+4. Riparti sempre il branch di lavoro dall'ultimo default branch
+   (`git checkout -B <branch> origin/main`) prima di applicare il nuovo commit,
+   dato che la PR precedente è già mergiata.
+5. Dopo aver applicato: `git ls-tree -r HEAD` deve contenere i file attesi e
+   `npx tsc --noEmit` (o la build) deve essere verde prima di push/PR/merge.
+
 ## Stack
 
 - **Next.js 15** (App Router) + **React 19** + **TypeScript**
