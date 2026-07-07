@@ -1,4 +1,4 @@
-# VISTA Suite — demo front (v0.4)
+# VISTA Suite — demo front + sito (v0.5)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -163,6 +163,20 @@ scena ora vive dentro lo step della sua decisione).
 Niente collegamento diretto col gestionale del negozio: i dati
 arriveranno via **export CSV** (quotidiano o settimanale) con un parser
 dedicato per tracciato. Da costruire quando si parte coi piloti.
+
+## v0.5 — Il sito pubblico
+
+- `/` e ora la landing (posizionamento: il livello che fa guadagnare,
+  sopra qualunque gestionale, FOCUS incluso, mai contro): hero con la
+  matematica 149-480, i tre moduli, come funziona (export CSV, tablet,
+  richiami in giornata), calcolatore ROI interattivo, sezione voucher
+  camerali, visione futuro (smart glasses + telerefrazione, con la riga
+  MIDO 2027), prezzi trasparenti, FAQ = le obiezioni del kit, contatti.
+- L'hub delle demo si e spostato su `/demo` (copy resa pubblica);
+  `/demo/[tenant]` invariato. Il sito linka la demo ovunque: da noi il
+  prodotto si tocca senza parlare con nessuno.
+- Placeholder da sostituire prima del deploy pubblico: email
+  `info@vistasuite.example`, dominio, P.IVA in footer.
 
 ## Prossimi passi (ordine concordato)
 
