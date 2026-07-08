@@ -371,3 +371,21 @@ export const OPPORTUNITA_CANALI = [
     stato: "da valutare",
   },
 ];
+
+/* ── Selettore sito per l'agente (tablet, trattativa) ────────────── */
+
+/** Palette pronte per il sito in regalo: doppia tinta, nomi da dire a voce. */
+export const PALETTE_SITI = [
+  { id: "espresso", nome: "Espresso & Ottone", primary: "#1C1714", accent: "#A67C42", accentSoft: "#EFE4D3", surface: "#F6F1EA", textSoft: "#6B5D50" },
+  { id: "bottega", nome: "Blu bottega & Salvia", primary: "#12263A", accent: "#2F7D5F", accentSoft: "#DEEDE5", surface: "#F2F5F4", textSoft: "#4E6572" },
+  { id: "bordeaux", nome: "Bordeaux & Cipria", primary: "#571C2A", accent: "#B4767C", accentSoft: "#F3E2E4", surface: "#FAF5F4", textSoft: "#7A5A60" },
+  { id: "bosco", nome: "Verde bosco & Sabbia", primary: "#1E3A2F", accent: "#B99B5F", accentSoft: "#EDE6D6", surface: "#F5F3EC", textSoft: "#5C6B5F" },
+  { id: "grafite", nome: "Grafite & Ambra", primary: "#23262B", accent: "#D08C2E", accentSoft: "#F4E7D2", surface: "#F4F4F2", textSoft: "#5B6066" },
+] as const;
+
+/** I tre stili del sito in regalo — discendenze dagli asset della zip. */
+export const TEMPLATE_SITI = [
+  { id: "vetrina", nome: "Vetrina", claim: "Classico di bottega: storia, servizi, fiducia." },
+  { id: "boutique", nome: "Boutique", claim: "Moderno e visivo: collezioni in primo piano." },
+  { id: "studio", nome: "Studio", claim: "Optometrico: prenotazione e servizi in evidenza." },
+] as const;
