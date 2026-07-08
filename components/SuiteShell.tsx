@@ -83,12 +83,12 @@ export default function SuiteShell({ tenant }: { tenant: Tenant }) {
 
           {/* tab moduli, solo lato ottico — filtrati sui moduli attivi del tenant */}
           {vista === "ottico" && (
-            <div className="max-w-2xl mx-auto flex gap-1.5 mt-3">
+            <div className="max-w-2xl mx-auto flex gap-1.5 mt-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {moduli.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => setModuloId(m.id)}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs f-ui font-semibold"
+                  className="flex-1 min-w-fit shrink-0 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl text-xs f-ui font-semibold"
                   style={
                     moduloId === m.id
                       ? { background: T.teal, color: "#fff" }
