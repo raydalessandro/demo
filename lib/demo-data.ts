@@ -389,3 +389,23 @@ export const TEMPLATE_SITI = [
   { id: "boutique", nome: "Boutique", claim: "Moderno e visivo: collezioni in primo piano." },
   { id: "studio", nome: "Studio", claim: "Optometrico: prenotazione e servizi in evidenza." },
 ] as const;
+
+/**
+ * La gara dei voucher — il meccanismo vero dei fondi a convenzione:
+ * quando l'iscritto apre un voucher sul portale del fondo, il fondo
+ * avvisa TUTTI gli ottici convenzionati. Il primo che contatta il
+ * cliente se lo porta in negozio: un voucher aperto è un occhiale
+ * certo, va solo contattato prima degli altri. Le catene ci sono
+ * maniacali; gli indipendenti spesso non sanno che la gara esiste.
+ * V1: contatto manuale a un tocco. Poi: controllo del portale ogni
+ * 10 minuti e messaggio automatico all'apertura.
+ */
+export const VOUCHER_APERTI = [
+  { id: 1, nome: "Marta Colnaghi", conv: "Metasalute", valore: 150, aperto: "12 min fa", stato: "da_contattare", esito: "" },
+  { id: 2, nome: "Stefano Riboni", conv: "Metasalute", valore: 80, aperto: "1 ora fa", stato: "da_contattare", esito: "" },
+  { id: 3, nome: "Paolo Greco", conv: "Metasalute", valore: 150, aperto: "1 sett fa", stato: "vinto", esito: "contattato in 8 min · venuto ieri: €340" },
+  { id: 4, nome: "Rita Sanna", conv: "Metasalute", valore: 80, aperto: "2 sett fa", stato: "perso", esito: "contattato dopo 2 giorni · andata altrove" },
+];
+
+export const MSG_VOUCHER =
+  "Buongiorno {{nome}}! Abbiamo visto che ha aperto il voucher {{fondo}} da {{valore}}€: da {{negozio}} è già attivo. Passi quando vuole — controllo vista, scelta della montatura e pratica, pensiamo a tutto noi.";

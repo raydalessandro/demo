@@ -3,33 +3,40 @@
 import { useMemo, useState } from "react";
 import {
   Building2,
+  Check,
   ChevronDown,
   FileCheck,
   Handshake,
+  MessageCircle,
   Target,
   TrendingUp,
+  X,
 } from "lucide-react";
 import { Kpi, SectionTitle } from "@/components/ui";
-import { VISTA as T } from "@/lib/theme";
+import { VISTA as T, useTenant } from "@/lib/theme";
 import {
   CLIENTI_CONVENZIONE,
   CONVENZIONI,
+  MSG_VOUCHER,
   OPPORTUNITA_CANALI,
+  VOUCHER_APERTI,
 } from "@/lib/demo-data";
 
 /**
  * Convenzioni — il quarto pilastro: l'acquisizione.
  *
- * Recall fa tornare, Banco fa vendere meglio, Boutique trattiene:
- * questo modulo fa ARRIVARE. Ogni cliente entra taggato con la sua
- * fonte (la stessa colonna di app/sito/banco negli ordini) e il report
- * dimostra l'acquisizione — il numero da portare al rinnovo della
- * convenzione, e all'agente in trattativa.
+ * Il cuore del modulo è LA GARA: quando un iscritto apre il voucher sul
+ * portale del fondo, il fondo avvisa tutti i convenzionati. Il primo che
+ * lo contatta se lo porta in negozio — un voucher aperto è un occhiale
+ * certo. Le catene sono maniacali su questa lista; l'indipendente spesso
+ * non sa che la gara esiste. Qui la vede, col messaggio già pronto.
  *
- * Le meccaniche sono quelle vere del mercato: voucher (Metasalute),
- * rimborsuale (Fondo Est), fattura all'azienda (videoterminalisti
- * 81/08), pagamento diretto via network (UniSalute/Previmedical).
+ * Quanti clienti porta l'assicurazione dipende da quanto sei attento:
+ * il software rende l'attenzione quasi automatica (v1 manuale a un
+ * tocco; poi trigger sul portale e invio all'apertura).
  */
+
+type Voucher = (typeof VOUCHER_APERTI)[number];
 
 const MECCANICHE: Record<string, { label: string; bg: string; fg: string }> = {
   voucher: { label: "Voucher", bg: T.amberSoft, fg: T.amber },
@@ -47,30 +54,45 @@ const STATI_OPP: Record<string, { bg: string; fg: string }> = {
 const eur = (v: number) => "€" + v.toLocaleString("it-IT");
 
 export default function ConvenzioniModule() {
+  const tenant = useTenant();
   const [tab, setTab] = useState<"attive" | "report" | "opportunita">("attive");
-  const [aperta, setAperta] = useState<string | null>(null);
+  const [aperta, setAperta] = useState<string | null>("metasalute");
+  const [voucher, setVoucher] = useState<Voucher[]>(VOUCHER_APERTI);
+
+  const contatta = (id: number) =>
+    setVoucher((vs) =>
+      vs.map((v) =>
+        v.id === id ? { ...v, stato: "contattato", esito: "messaggio inviato · adesso" } : v,
+      ),
+    );
+
+  const msgPer = (v: Voucher) =>
+    MSG_VOUCHER.replace("{{nome}}", v.nome.split(" ")[0])
+      .replace("{{fondo}}", v.conv)
+      .replace("{{valore}}", String(v.valore))
+      .replace("{{negozio}}", tenant.nome);
 
   const kpi = useMemo(() => {
     const attive = CONVENZIONI.filter((c) => c.stato === "attiva");
     return {
+      daContattare: voucher.filter((v) => v.stato === "da_contattare").length,
       clienti: attive.reduce((s, c) => s + c.clienti, 0),
       incasso: attive.reduce((s, c) => s + c.incasso, 0),
-      attive: attive.length,
     };
-  }, []);
+  }, [voucher]);
 
   const maxIncasso = Math.max(...CONVENZIONI.map((c) => c.incasso), 1);
 
   return (
     <div>
       <div className="flex gap-2">
+        <Kpi
+          label="Voucher aperti"
+          value={String(kpi.daContattare)}
+          sub="da contattare — adesso"
+        />
         <Kpi label="Clienti nuovi (trim.)" value={String(kpi.clienti)} sub="da convenzioni" />
         <Kpi label="Incasso generato" value={eur(kpi.incasso)} />
-        <Kpi
-          label="Convenzioni attive"
-          value={String(kpi.attive)}
-          sub={`+${CONVENZIONI.length - kpi.attive} in attesa`}
-        />
       </div>
 
       <div className="flex gap-1.5 mt-4">
@@ -105,6 +127,8 @@ export default function ConvenzioniModule() {
               const attiva = c.stato === "attiva";
               const espansa = aperta === c.id;
               const clienti = CLIENTI_CONVENZIONE.filter((x) => x.conv === c.nome);
+              const gara = voucher.filter((v) => v.conv === c.nome);
+              const caldi = gara.filter((v) => v.stato === "da_contattare").length;
               return (
                 <div
                   key={c.id}
@@ -120,6 +144,14 @@ export default function ConvenzioniModule() {
                         <span className="text-sm f-ui font-semibold" style={{ color: T.ink }}>
                           {c.nome}
                         </span>
+                        {caldi > 0 && (
+                          <span
+                            className="text-[9px] f-ui font-bold px-1.5 py-0.5 rounded-full"
+                            style={{ background: T.amber, color: "#fff" }}
+                          >
+                            {caldi} voucher aperti
+                          </span>
+                        )}
                         <span
                           className="text-[9px] f-ui font-semibold px-1.5 py-0.5 rounded-full"
                           style={
@@ -158,6 +190,108 @@ export default function ConvenzioniModule() {
 
                   {espansa && (
                     <div className="px-3 pb-3">
+                      {/* ── LA GARA: voucher aperti adesso ── */}
+                      {gara.length > 0 && (
+                        <div
+                          className="rounded-xl p-3 mb-3"
+                          style={{ background: T.paper, border: `1px solid ${T.amber}` }}
+                        >
+                          <p className="text-[11px] leading-relaxed" style={{ color: T.inkSoft }}>
+                            <span className="f-ui font-bold" style={{ color: T.ink }}>
+                              La gara.
+                            </span>{" "}
+                            Quando un iscritto apre il voucher sul portale, il fondo
+                            avvisa <em>tutti</em> i convenzionati: il primo che lo
+                            contatta se lo porta in negozio. Un voucher aperto è un
+                            occhiale certo — va solo contattato prima degli altri.
+                          </p>
+                          <div className="mt-2.5 space-y-1.5">
+                            {gara.map((v) => (
+                              <div
+                                key={v.id}
+                                className="rounded-lg p-2.5"
+                                style={{ background: T.card, border: `1px solid ${T.line}` }}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-baseline gap-1.5 flex-wrap">
+                                      <span
+                                        className="text-xs f-ui font-semibold"
+                                        style={{ color: T.ink }}
+                                      >
+                                        {v.nome}
+                                      </span>
+                                      <span className="f-mono text-xs" style={{ color: T.amber }}>
+                                        €{v.valore}
+                                      </span>
+                                      <span className="f-mono text-[10px]" style={{ color: T.inkSoft }}>
+                                        aperto {v.aperto}
+                                      </span>
+                                    </div>
+                                    {v.esito && (
+                                      <div
+                                        className="text-[10px] f-mono mt-0.5"
+                                        style={{
+                                          color: v.stato === "perso" ? T.inkSoft : T.teal,
+                                        }}
+                                      >
+                                        {v.esito}
+                                      </div>
+                                    )}
+                                  </div>
+                                  {v.stato === "da_contattare" && (
+                                    <button
+                                      onClick={() => contatta(v.id)}
+                                      className="shrink-0 flex items-center gap-1 text-[11px] f-ui font-semibold px-2.5 py-1.5 rounded-lg"
+                                      style={{ background: T.teal, color: "#fff" }}
+                                    >
+                                      <MessageCircle size={12} /> Contatta
+                                    </button>
+                                  )}
+                                  {v.stato === "contattato" && (
+                                    <span
+                                      className="shrink-0 flex items-center gap-1 text-[10px] f-ui font-semibold px-2 py-1 rounded-full"
+                                      style={{ background: T.tealSoft, color: T.teal }}
+                                    >
+                                      <Check size={11} /> contattato
+                                    </span>
+                                  )}
+                                  {v.stato === "vinto" && (
+                                    <span
+                                      className="shrink-0 flex items-center gap-1 text-[10px] f-ui font-semibold px-2 py-1 rounded-full"
+                                      style={{ background: T.teal, color: "#fff" }}
+                                    >
+                                      <Check size={11} /> vinto
+                                    </span>
+                                  )}
+                                  {v.stato === "perso" && (
+                                    <span
+                                      className="shrink-0 flex items-center gap-1 text-[10px] f-ui font-semibold px-2 py-1 rounded-full"
+                                      style={{ background: T.paper, color: T.inkSoft }}
+                                    >
+                                      <X size={11} /> perso
+                                    </span>
+                                  )}
+                                </div>
+                                {v.stato === "contattato" && (
+                                  <div
+                                    className="mt-2 rounded-lg p-2 text-[11px] leading-relaxed"
+                                    style={{ background: T.tealSoft, color: T.ink }}
+                                  >
+                                    {msgPer(v)}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          <p className="f-mono text-[10px] mt-2 leading-relaxed" style={{ color: T.inkSoft }}>
+                            Oggi tocchi tu «Contatta». Presto: controllo del portale
+                            ogni 10 minuti e messaggio in partenza da solo appena il
+                            voucher si apre.
+                          </p>
+                        </div>
+                      )}
+
                       <p className="text-xs leading-relaxed" style={{ color: T.inkSoft }}>
                         {c.regole}
                       </p>
@@ -245,11 +379,14 @@ export default function ConvenzioniModule() {
               {kpi.clienti} clienti nuovi · {eur(Math.round(kpi.incasso / kpi.clienti))} di
               scontrino medio
             </div>
+            <div className="text-[11px] f-mono mt-0.5" style={{ color: T.teal }}>
+              gara voucher: 9 aperti, 7 vinti · tempo medio di contatto 21 min
+            </div>
           </div>
           <div className="text-[11px] mt-2 leading-relaxed" style={{ color: T.inkSoft }}>
-            Questo è il numero da portare al rinnovo della convenzione — e il
-            primo scontrino è solo l’inizio: ogni cliente entrato da qui è già
-            nel Recall, col suo ciclo di vita davanti.
+            Quanti clienti porta l’assicurazione dipende da quanto sei veloce: il
+            tempo di contatto è il numero da guardare. E il primo scontrino è solo
+            l’inizio — ogni cliente entrato da qui è già nel Recall.
           </div>
         </>
       )}

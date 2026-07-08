@@ -1,4 +1,4 @@
-# VISTA Suite — demo front + sito (v0.8)
+# VISTA Suite — demo front + sito (v0.10)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -194,6 +194,39 @@ dedicato per tracciato. Da costruire quando si parte coi piloti.
   prodotto si tocca senza parlare con nessuno.
 - Placeholder da sostituire prima del deploy pubblico: email
   `info@vistasuite.example`, dominio, P.IVA in footer.
+
+## v0.10 — La gara dei voucher (correzione di dominio)
+
+Il meccanismo vero dei fondi a convenzione: quando l'iscritto apre un
+voucher sul portale, il fondo avvisa TUTTI gli ottici convenzionati.
+Il primo che lo contatta se lo porta in negozio — un voucher aperto è
+un occhiale certo. Le catene sono maniacali su questa lista; gli
+indipendenti spesso non sanno che la gara esiste.
+
+- Nella card Metasalute (aperta di default): blocco **"La gara"** —
+  voucher aperti adesso con valore, freschezza ("aperto 12 min fa") e
+  tasto **Contatta** che prepara il messaggio WhatsApp col nome del
+  negozio. Un voucher "vinto" (Paolo Greco: contattato in 8 min →
+  €340, lo stesso che compare tra i clienti sotto) e uno "perso"
+  (contattata dopo 2 giorni → andata altrove): la lezione della
+  velocità è dentro la UI.
+- KPI di testa nuovo: **Voucher aperti · da contattare adesso**.
+- Nel report: "gara voucher: 9 aperti, 7 vinti · tempo medio di
+  contatto 21 min" — la velocità è il numero da guardare.
+- Roadmap dichiarata nella UI: oggi contatto a un tocco; poi trigger
+  sul portale ogni 10 minuti e invio automatico all'apertura.
+
+## v0.9 — Il tablet dell'agente: selettore del sito in regalo
+
+- Rotta interna `/agente` (noindex): nome, città e anno del negozio +
+  5 palette + 3 stili (**Vetrina** classica con cornice a doppio
+  filetto, **Boutique** brand-first, **Studio** optometrico), anteprima
+  e tasto "Mostra a schermo intero" per passare il tablet al titolare.
+- Tutti i template portano i binari senza dirlo: sezione LAC online e
+  prenota — il regalo installa l'infrastruttura.
+- Striscia guardrail "da dire così": dominio al negozio, hosting nel
+  canone, un giro di modifiche, consegna alla firma.
+- Card di lancio nell'hub /demo.
 
 ## v0.8 — Convenzioni: il quarto pilastro (acquisizione)
 
