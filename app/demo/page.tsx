@@ -78,6 +78,24 @@ export default function DemoHub() {
           ))}
         </div>
 
+        <div className="mt-6 rounded-2xl p-4" style={{ background: "#fff", border: "1px solid #DCE5E3" }}>
+          <p className="f-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "#127E7A" }}>
+            Nuovo · LAC online
+          </p>
+          <p className="text-sm mt-1.5 leading-relaxed" style={{ color: "#274744" }}>
+            Il sito pubblico del negozio — quello che regaliamo alla firma —
+            vende le lenti a contatto: il cliente ordina dal divano, ritira e
+            paga in negozio. E l&apos;ordine atterra nel modulo Ordini del pannello.
+          </p>
+          <div className="flex gap-4 mt-2.5 f-mono text-xs" style={{ color: "#127E7A" }}>
+            {TENANTS.map((t) => (
+              <Link key={t.slug} href={`/sito/${t.slug}`}>
+                sito {t.nome.replace("Ottica ", "")} →
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <p className="f-mono text-[11px] mt-10 leading-relaxed" style={{ color: "#274744" }}>
           Due negozi, gli stessi componenti: cambia solo la configurazione.
           È il white-label che installiamo in ogni centro ottico — col suo nome, mai col nostro.
