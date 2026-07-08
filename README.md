@@ -1,4 +1,4 @@
-# VISTA Suite — demo front + sito (v0.6)
+# VISTA Suite — demo front + sito (v0.7)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -194,6 +194,25 @@ dedicato per tracciato. Da costruire quando si parte coi piloti.
   prodotto si tocca senza parlare con nessuno.
 - Placeholder da sostituire prima del deploy pubblico: email
   `info@vistasuite.example`, dominio, P.IVA in footer.
+
+## v0.7 — LAC online: il sito del negozio vende
+
+- Nuova superficie pubblica `/sito/[tenant]`: il sito del negozio (quello
+  che regaliamo alla firma), coi colori e il nome del tenant — mai col
+  nostro. Prima pagina: **lenti a contatto online**.
+- Flusso cliente da telefono, sotto il minuto: prodotto (catalogo con
+  prezzi) → poteri OD/OS con ghiera a passi di 0.25 → confezioni → nome
+  e cellulare → ordina. Zero pagamenti in v1: si ritira e si paga in
+  negozio — ogni ritiro è un rientro (l'esca del kit). Stripe in v2.
+- Il cerchio si chiude: l'ordine finisce in localStorage e il modulo
+  Ordini del pannello ottico lo pesca in cima alla coda con badge
+  "dal sito" (accanto a "dall'app"). Demo per AD: ordina dal sito, apri
+  il pannello, l'ordine è lì.
+- In produzione al posto del localStorage c'è Supabase (stessa tabella
+  ordini): qui serve solo a mostrare il giro senza backend.
+- Prossimi pezzi concordati: modulo **Convenzioni** (fonte cliente,
+  tariffari, report — il quarto pilastro: acquisizione), poi i
+  **template** del sito per il tablet dell'agente.
 
 ## v0.6 — Ordini: la prima cellula del gestionale
 

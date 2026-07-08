@@ -229,12 +229,15 @@ export const PREZZO_FOTO = 80;
 
 /* ── Modulo Ordini (gestionale, prima cellula) ───────────────────── */
 
-export const LAC_CATALOGO = [
-  "Acuvue Oasys mensili ×6",
-  "Dailies Total1 90pz",
-  "Biofinity mensili ×6",
-  "Air Optix plus HydraGlyde ×6",
-];
+/** Catalogo LAC vendibile online — prezzi demo, per negozio in produzione. */
+export const LAC_SHOP = [
+  { id: "oasys6", nome: "Acuvue Oasys mensili ×6", tipo: "Mensili · silicone hydrogel", prezzo: 24.9 },
+  { id: "total190", nome: "Dailies Total1 90pz", tipo: "Giornaliere premium", prezzo: 79.9 },
+  { id: "biofinity6", nome: "Biofinity mensili ×6", tipo: "Mensili comfort", prezzo: 27.9 },
+  { id: "airoptix6", nome: "Air Optix plus HydraGlyde ×6", tipo: "Mensili idratanti", prezzo: 29.9 },
+] as const;
+
+export const LAC_CATALOGO = LAC_SHOP.map((p) => p.nome);
 
 /** Pipeline ordine LAC — stati ripresi da OrdiniLACModule (in_attesa_ordine → …). */
 export const STATI_LAC = [

@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Check, Droplets, FileText, Minus, Plus, Smartphone } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Check, Droplets, FileText, Globe, Minus, Plus, Smartphone } from "lucide-react";
 import { Kpi, SectionTitle } from "@/components/ui";
-import { VISTA as T } from "@/lib/theme";
+import { VISTA as T, useTenant } from "@/lib/theme";
 import {
   BUSTE_DEMO,
   LAC_CATALOGO,
@@ -52,9 +52,26 @@ function StatoChip({
 }
 
 export default function OrdiniModule() {
+  const tenant = useTenant();
   const [tab, setTab] = useState<"lac" | "buste">("lac");
   const [ordini, setOrdini] = useState<OrdineLAC[]>(ORDINI_LAC_DEMO);
   const [buste, setBuste] = useState<Busta[]>(BUSTE_DEMO);
+
+  // Gli ordini fatti sul sito pubblico (/sito/[slug]) atterrano qui in coda.
+  // In produzione: stessa tabella su Supabase, qui localStorage per la demo.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(`vista_sito_ordini_${tenant.slug}`);
+      if (!raw) return;
+      const dalSito = JSON.parse(raw) as OrdineLAC[];
+      setOrdini((prev) => [
+        ...dalSito.filter((n) => !prev.some((p) => p.id === n.id)),
+        ...prev,
+      ]);
+    } catch {
+      /* senza storage la coda resta quella di esempio */
+    }
+  }, [tenant.slug]);
 
   // nuovo ordine
   const [formAperto, setFormAperto] = useState(false);
@@ -104,7 +121,7 @@ export default function OrdiniModule() {
     const pronti =
       ordini.filter((o) => o.stato === "arrivato").length +
       buste.filter((b) => b.stato === "pronta").length;
-    const dallApp = ordini.filter((o) => o.fonte === "app" && o.stato !== "consegnato").length;
+    const dallApp = ordini.filter((o) => (o.fonte === "app" || o.fonte === "sito") && o.stato !== "consegnato").length;
     return { aperti, pronti, dallApp };
   }, [ordini, buste]);
 
@@ -113,7 +130,7 @@ export default function OrdiniModule() {
       <div className="flex gap-2">
         <Kpi label="Ordini aperti" value={String(kpi.aperti)} />
         <Kpi label="Pronti · da avvisare" value={String(kpi.pronti)} sub="rientri in negozio" />
-        <Kpi label="Riordini dall'app" value={String(kpi.dallApp)} sub="Boutique → qui" />
+        <Kpi label="Da app e sito" value={String(kpi.dallApp)} sub="canali digitali → qui" />
       </div>
 
       <div className="flex gap-1.5 mt-4">
@@ -223,12 +240,13 @@ export default function OrdiniModule() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="text-sm f-ui font-semibold" style={{ color: T.ink }}>{o.cliente}</span>
-                      {o.fonte === "app" && (
+                      {(o.fonte === "app" || o.fonte === "sito") && (
                         <span
                           className="text-[9px] f-ui font-semibold px-1.5 py-0.5 rounded-full inline-flex items-center gap-1"
                           style={{ background: T.tealSoft, color: T.teal }}
                         >
-                          <Smartphone size={9} /> dall&apos;app
+                          {o.fonte === "app" ? <Smartphone size={9} /> : <Globe size={9} />}
+                          {o.fonte === "app" ? "dall'app" : "dal sito"}
                         </span>
                       )}
                     </div>
@@ -243,8 +261,8 @@ export default function OrdiniModule() {
             })}
           </div>
           <div className="text-[11px] mt-2" style={{ color: T.inkSoft }}>
-            Il riordino che il cliente fa con un tap nell&apos;app Boutique atterra qui, in cima
-            alla coda. Tocca lo stato per farlo avanzare: su &quot;Arrivato&quot; parte l&apos;avviso
+            Il riordino dall&apos;app Boutique e l&apos;ordine fatto sul sito del negozio
+            atterrano qui, in cima alla coda. Tocca lo stato per farlo avanzare: su &quot;Arrivato&quot; parte l&apos;avviso
             WhatsApp — un altro rientro in negozio.
           </div>
         </>
