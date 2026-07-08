@@ -266,3 +266,108 @@ export const BUSTE_DEMO = [
   { id: "BL-2026-0139", cliente: "Martina Colombo", descrizione: "Monofocale · 1.50 · AR classico", stato: "pronta" },
   { id: "BL-2026-0134", cliente: "Elena Ricci", descrizione: "Sole graduato · 1.60", stato: "consegnata" },
 ];
+
+/* ── Modulo Convenzioni (quarto pilastro: acquisizione) ──────────── */
+
+/**
+ * Le convenzioni del negozio. Meccaniche reali del mercato italiano:
+ * — voucher (Metasalute: 80€ MS3 / 150€ MS4)
+ * — rimborsuale pura (Fondo Est: 90€/36 mesi, prescrizione oculista)
+ * — fattura all'azienda (videoterminalisti, art. 176 c.6 D.Lgs 81/08)
+ * — diretta/network (UniSalute/Previmedical: il fondo paga la struttura)
+ * In produzione: tabella `convenzioni` + colonna `fonte` sul cliente,
+ * la stessa già usata dagli ordini (app / sito / banco / convenzione).
+ */
+export const CONVENZIONI = [
+  {
+    id: "metasalute",
+    nome: "Metasalute",
+    tipo: "Fondo CCNL · metalmeccanici",
+    meccanica: "voucher",
+    regole:
+      "Voucher Salute da 80€ (piano MS3) o 150€ (MS4) sull'occhiale completo. Fattura intestata all'iscritto, si scarica dal portale del fondo.",
+    documenti: ["Tessera del fondo", "Fattura parlante", "Prescrizione recente"],
+    stato: "attiva",
+    clienti: 7,
+    incasso: 2340,
+  },
+  {
+    id: "fondoest",
+    nome: "Fondo Est",
+    tipo: "Fondo CCNL · commercio e terziario",
+    meccanica: "rimborsuale",
+    regole:
+      "Rimborso di 90€ ogni 36 mesi, acquisto libero in qualsiasi negozio. Serve la prescrizione dell'oculista (quella dell'ottico vale solo per il vicino isolato): qui l'alleanza con lo studio oculistico paga.",
+    documenti: ["Prescrizione oculista (max 24 mesi)", "Fattura con tipologia prodotto"],
+    stato: "attiva",
+    clienti: 5,
+    incasso: 1610,
+  },
+  {
+    id: "officecorp",
+    nome: "OfficeCorp Srl",
+    tipo: "Azienda · 45 videoterminalisti",
+    meccanica: "fattura azienda",
+    regole:
+      "Occhiali office (DSCV) a carico del datore di lavoro ex art. 176 c.6 D.Lgs 81/08, quando li prescrive il medico competente. Fattura direttamente all'azienda, tariffario concordato.",
+    documenti: ["Giudizio di idoneità con prescrizione DSCV", "Ordine dell'azienda", "Fattura a OfficeCorp"],
+    stato: "attiva",
+    clienti: 9,
+    incasso: 1890,
+  },
+  {
+    id: "unisalute",
+    nome: "Circuito UniSalute",
+    tipo: "Network · pagamento diretto",
+    meccanica: "diretta",
+    regole:
+      "Il fondo paga direttamente e integralmente la struttura convenzionata: i clienti ti trovano sul directory del network. Domanda di convenzionamento inviata, in valutazione.",
+    documenti: ["Domanda di convenzionamento", "Tariffario concordato"],
+    stato: "in attesa",
+    clienti: 0,
+    incasso: 0,
+  },
+];
+
+export const CLIENTI_CONVENZIONE = [
+  { nome: "Paolo Greco", conv: "Metasalute", cosa: "Progressive + montatura", spesa: 340, quando: "ieri" },
+  { nome: "Sara Fontana", conv: "OfficeCorp Srl", cosa: "Occhiale office 1.50 AR", spesa: 210, quando: "2 gg fa" },
+  { nome: "Luca Moretti", conv: "Fondo Est", cosa: "Monofocali + blue block", spesa: 290, quando: "4 gg fa" },
+  { nome: "Anna Riva", conv: "Metasalute", cosa: "Occhiale completo", spesa: 310, quando: "1 sett fa" },
+  { nome: "Davide Sala", conv: "OfficeCorp Srl", cosa: "Occhiale office 1.60", spesa: 235, quando: "1 sett fa" },
+];
+
+export const OPPORTUNITA_CANALI = [
+  {
+    id: "vdt",
+    nome: "Aziende con videoterminalisti",
+    gancio:
+      "L'art. 176 c.6 del D.Lgs 81/08 mette gli occhiali office a carico del datore di lavoro, su prescrizione del medico competente (sanzioni fino a ~4.900€ se manca). Ogni ufficio della zona è un bacino.",
+    primoPasso: "Proposta di convenzione all'azienda + contatto col medico competente",
+    stato: "da contattare",
+  },
+  {
+    id: "welfare",
+    nome: "Piattaforme welfare (Edenred, Pluxee, TreCuori)",
+    gancio:
+      "I dipendenti spendono il credito welfare solo dove è accettato: entrare tra gli esercizi convenzionati intercetta spesa già stanziata.",
+    primoPasso: "Richiesta di affiliazione alle piattaforme",
+    stato: "da valutare",
+  },
+  {
+    id: "oculisti",
+    nome: "Studi oculistici di zona",
+    gancio:
+      "Fondo Est e molti fondi pretendono la prescrizione dell'oculista: l'alleanza è strutturale, non un favore. Segnalazione reciproca, zero compensi.",
+    primoPasso: "Accordo di reciproca segnalazione",
+    stato: "in corso",
+  },
+  {
+    id: "cral",
+    nome: "CRAL e associazioni locali",
+    gancio:
+      "Dipendenti comunali, forze dell'ordine, circoli aziendali: convenzioni classiche ad alta fiducia, costo zero.",
+    primoPasso: "Sconto dedicato + codice convenzione",
+    stato: "da valutare",
+  },
+];

@@ -8,7 +8,7 @@
  * senza toccare i componenti.
  */
 
-export type ModuleId = "recall" | "banco" | "boutique" | "ordini";
+export type ModuleId = "recall" | "banco" | "boutique" | "ordini" | "convenzioni";
 
 /** Palette del negozio: veste l'app cliente (lato Boutique). */
 export interface TenantBrand {

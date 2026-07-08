@@ -21,4 +21,8 @@ export const MODULE_META: Record<ModuleId, { label: string; descrizione: string 
     label: "Ordini",
     descrizione: "La pipeline del laboratorio: ordini LAC e buste occhiali, con gli stati.",
   },
+  convenzioni: {
+    label: "Convenzioni",
+    descrizione: "Il quarto pilastro: fondi, aziende e canali che portano clienti nuovi.",
+  },
 };

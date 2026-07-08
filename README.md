@@ -1,4 +1,4 @@
-# VISTA Suite — demo front + sito (v0.7)
+# VISTA Suite — demo front + sito (v0.8)
 
 Il compagno digitale dell'ottico indipendente. Questo repo contiene le
 **demo front-end** da mostrare ad AD e all'agente: nessun backend, dati
@@ -194,6 +194,25 @@ dedicato per tracciato. Da costruire quando si parte coi piloti.
   prodotto si tocca senza parlare con nessuno.
 - Placeholder da sostituire prima del deploy pubblico: email
   `info@vistasuite.example`, dominio, P.IVA in footer.
+
+## v0.8 — Convenzioni: il quarto pilastro (acquisizione)
+
+Nuovo modulo **Convenzioni** su Aurora: Recall fa tornare, Banco fa
+vendere meglio, Boutique trattiene — questo fa ARRIVARE.
+
+- **Attive**: le convenzioni del negozio con le meccaniche vere del
+  mercato italiano — voucher (Metasalute 80/150€), rimborsuale puro
+  (Fondo Est 90€/36 mesi, prescrizione oculista), fattura all'azienda
+  (videoterminalisti art. 176 c.6 D.Lgs 81/08), pagamento diretto via
+  network (UniSalute, domanda in attesa). Ogni card si apre su regole,
+  checklist documenti e clienti arrivati da quella fonte.
+- **Report**: quanto porta ogni canale (clienti, incasso, scontrino
+  medio) — il numero da portare al rinnovo della convenzione e
+  all'agente in trattativa. La fonte del cliente è la stessa colonna di
+  "dall'app"/"dal sito" negli ordini: il report si scrive da solo.
+- **Da attivare**: la pipeline dei canali in zona (aziende VDT, welfare
+  Edenred/Pluxee/TreCuori, oculisti, CRAL) con gancio e primo passo.
+- SuiteShell: barra moduli ora scorrevole (5 tab su mobile).
 
 ## v0.7 — LAC online: il sito del negozio vende
 
